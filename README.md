@@ -21,8 +21,13 @@ The ingestion component is implemented as the first development slice:
 - A unified `app.ingestion.pipeline.ingest_file()` entry point that returns
   common `TextChunk` objects for downstream indexing.
 
-The BM25 indexing component is now implemented. ChromaDB/vector indexing,
-hybrid retrieval, generation, and evaluation remain the next phases.
+The indexing components are now implemented:
+
+- BM25+ sparse term retrieval with English and Italian tokenization.
+- ChromaDB dense retrieval using a lazy-loaded Sentence Transformers model.
+- A shared result shape suitable for the future hybrid retriever.
+
+Hybrid fusion, generation, and evaluation remain the next phases.
 
 ## BM25 indexing design
 
@@ -45,12 +50,28 @@ matches returns no arbitrary zero-information chunks.
 
 ```python
 from app.ingestion import ingest_file
-from app.indexing import BM25Index
+from app.indexing import BM25Index, VectorStore
 
-index = BM25Index()
-index.add_chunks(ingest_file("notes/meeting.md").chunks)
-results = index.search("project deadline", top_k=5)
+chunks = ingest_file("notes/meeting.md").chunks
+
+sparse_index = BM25Index()
+sparse_index.add_chunks(chunks)
+sparse_results = sparse_index.search("project deadline", top_k=5)
+
+# Uses all-MiniLM-L6-v2 by default and persists locally when a directory is given.
+dense_index = VectorStore(persist_directory="data/chroma")
+dense_index.add_chunks(chunks)
+dense_results = dense_index.search("project deadline", top_k=5)
 ```
+
+### ChromaDB design
+
+`VectorStore` uses ChromaDB with the local `all-MiniLM-L6-v2` Sentence
+Transformers model as a compact embedding baseline. The model is loaded only
+when the first add/search operation needs embeddings. Chroma distances are
+converted into a higher-is-better `score = 1 / (1 + distance)` while the raw
+`distance` is retained for diagnostics. Tests inject a deterministic embedding
+function so they do not download model weights.
 
 ## Ingestion design notes
 
