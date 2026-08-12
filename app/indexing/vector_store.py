@@ -17,7 +17,7 @@ class _SentenceTransformerEmbeddingFunction:
     """
     Wrapper for SentenceTransformerEmbeddingFunction that delays model loading until first use.
     Contains the __call__ method that converts a list of strings to a list of embedding vectors.
-    """
+"""
 
     def __init__(self, model_name: str) -> None:
         self.model_name = model_name
