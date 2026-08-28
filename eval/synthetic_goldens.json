@@ -1,0 +1,112 @@
+[
+  {
+    "input": "If no legal hold exists, what happens to customer event data after month 24?",
+    "expected_output": "If no legal hold exists, customer event data is automatically deleted from primary storage within seven days after the 24-month retention period ends.",
+    "source": null
+  },
+  {
+    "input": "What governs backup deletion during weekly maintenance under active legal holds?",
+    "expected_output": "Backup deletion is normally handled by the infrastructure team during the weekly maintenance window, but an active legal hold suspends deletion for the affected records until the legal team formally releases it.",
+    "source": null
+  },
+  {
+    "input": "If no legal hold exists, when are customer event data auto-deleted from primary storage?",
+    "expected_output": "If no legal hold exists, customer event data is automatically deleted from primary storage within 7 days after the 24-month retention period ends.",
+    "source": null
+  },
+  {
+    "input": "What is the retention period for encrypted backups, and which team deletes them weekly?",
+    "expected_output": "Encrypted backups are retained for 90 days, and they are deleted by the infrastructure team during the weekly maintenance window.",
+    "source": null
+  },
+  {
+    "input": "If an employee planned an extended trip, how many paid vacation days yearly?",
+    "expected_output": "Employees receive **25 paid vacation days per calendar year**.",
+    "source": null
+  },
+  {
+    "input": "What are manager-approved alt core hours for teams with nonstandard weekday schedules?",
+    "expected_output": "The handbook says core collaboration hours are **10:00 to 16:00 local time, Monday through Friday**, but **teams may agree on different schedules with their manager**. It does **not specify exact alternative core hours**, only that nonstandard schedules need manager agreement.",
+    "source": null
+  },
+  {
+    "input": "According to Project Beta schedule, when is design review, and who is eng lead?",
+    "expected_output": "The design review is scheduled for 21 March 2025, and the engineering lead is Priya Shah.",
+    "source": null
+  },
+  {
+    "input": "Can ext users access Project Beta before 30 Jun 2025 prod launch?",
+    "expected_output": "No. Project Beta is available to internal users only until the production launch on 30 June 2025, so external users cannot access it before then.",
+    "source": null
+  },
+  {
+    "input": "Compare Project Beta’s design review, public beta, and prod launch dates.",
+    "expected_output": "Project Beta’s key dates are:\n\n- Design review: 21 March 2025\n- Public beta: 15 April 2025\n- Production launch: 30 June 2025\n\nIn order, the design review comes first, then the public beta, and finally the production launch.",
+    "source": null
+  },
+  {
+    "input": "Is Project Beta, the internal document search app, restricted to internal users until 30 June 2025?",
+    "expected_output": "Yes. Project Beta is available to internal users only until the production launch, which is planned for 30 June 2025.",
+    "source": null
+  },
+  {
+    "input": "For Project Alpha, who owns it, leads eng, and handles critical prod escalations?",
+    "expected_output": "Project Alpha is owned by Elena Rossi, the engineering lead is David Chen, and critical production incidents are escalated to the engineering lead.",
+    "source": null
+  },
+  {
+    "input": "What date marks Project Alpha's public beta kickoff?",
+    "expected_output": "Project Alpha’s public beta begins on **2 April 2025**.",
+    "source": null
+  },
+  {
+    "input": "Using CV ctx, verify Simone is titled AI Engineer and currently Data Engineer at Logistics Reply.",
+    "expected_output": "Yes — the CV identifies **Simone Cappiello** with the title **“AI Engineer”** at the top, and in the experience section it states he is currently **Data Engineer at Logistics Reply** from **January 2025 – Present**.",
+    "source": null
+  },
+  {
+    "input": "Identify Simone’s TECHNICAL SKILLS categories, then infer his listed programming langs.",
+    "expected_output": "Simone’s **TECHNICAL SKILLS** categories are:\n\n- **Applied AI**\n- **Programming Languages**\n- **Backend**\n- **Databases**\n- **Cloud & DevOps**\n\nHis listed **programming languages** are:\n\n- **Python**\n- **R**\n\nSupporting context: under **TECHNICAL SKILLS**, the resume explicitly lists “**Programming Languages: Python, R**.”",
+    "source": null
+  },
+  {
+    "input": "What are the standard 8-hour workday and core collaboration hrs of 10:00–16:00 local time?",
+    "expected_output": "The standard working day is eight hours. Core collaboration hours are 10:00 to 16:00 local time, Monday through Friday.",
+    "source": null
+  },
+  {
+    "input": "What is the notice period for vacation requests in the HR system?",
+    "expected_output": "Vacation requests should normally be submitted at least two weeks before the first day of leave, and the manager approves them in the HR system.",
+    "source": null
+  },
+  {
+    "input": "Compare employee pwd rules vs MFA reqs for prod systems and admin accounts.",
+    "expected_output": "Password rules for employees:\n- Passwords must be at least 12 characters.\n- Passwords must not be reused across company systems.\n\nMFA requirements:\n- Multi-factor authentication is required for production systems.\n- Multi-factor authentication is also required for administrative accounts.",
+    "source": null
+  },
+  {
+    "input": "If an employee discovers a security incident, by when must they email security@example.com?",
+    "expected_output": "They must report it to **security@example.com within one hour of discovery**.",
+    "source": null
+  },
+  {
+    "input": "How do Project Alpha's design review, public beta, and production launch dates compare?",
+    "expected_output": "Project Alpha’s milestones are scheduled in this order:\n\n- Design review: 14 March 2025\n- Public beta: 2 April 2025\n- Production launch: 19 May 2025\n\nSo, the design review happens first, followed by the public beta, and then the production launch.",
+    "source": null
+  },
+  {
+    "input": "Who is Project Alpha's engineering lead for escalated critical production incidents?",
+    "expected_output": "David Chen is the engineering lead, and critical production incidents are escalated to him.",
+    "source": null
+  },
+  {
+    "input": "If an employee reuses a 10-char password on prod, which policy rules are violated?",
+    "expected_output": "The employee violates these policy rules:\n\n- **Password length**: passwords must be **at least 12 characters**, so a **10-character** password is not allowed.\n- **Password reuse**: passwords **must not be reused across company systems**.\n- **Production system access**: **multi-factor authentication is required for production systems**. If MFA was not used on prod, that is also a violation.",
+    "source": null
+  },
+  {
+    "input": "For incidents, what's the reporting deadline, acknowledgment SLA, and required incident-register action?",
+    "expected_output": "Report security incidents to **security@example.com within 1 hour of discovery**. The security team will **acknowledge within 4 business hours** and **record each incident in the incident register**.",
+    "source": null
+  }
+]

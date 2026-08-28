@@ -27,7 +27,10 @@ The indexing components are now implemented:
 - ChromaDB dense retrieval using a lazy-loaded Sentence Transformers model.
 - A shared result shape suitable for the future hybrid retriever.
 
-Hybrid fusion, generation, and evaluation remain the next phases.
+Hybrid retrieval and Claude-backed generation are implemented. The
+`notebooks/full_pipeline_generation.ipynb` notebook demonstrates the complete
+pipeline with a deterministic offline dense backend and a fake Claude client;
+an optional cell enables the real API. Evaluation remains a future phase.
 
 ## BM25 indexing design
 
@@ -72,6 +75,26 @@ when the first add/search operation needs embeddings. Chroma distances are
 converted into a higher-is-better `score = 1 / (1 + distance)` while the raw
 `distance` is retained for diagnostics. Tests inject a deterministic embedding
 function so they do not download model weights.
+
+## Generation design notes
+
+`app.generation.answer_question()` accepts the normalized result dictionaries
+returned by `HybridRetriever`. It formats each chunk with its source and page,
+chunk, or timestamp location, then sends only that context to Anthropic Claude.
+The system prompt requires inline citations and an explicit "I do not know"
+response when the retrieved evidence is insufficient. The Anthropic client is
+created lazily and can be injected for tests or local demos:
+
+```python
+from app.generation import answer_question
+
+answer = answer_question("What is the deadline?", retrieved_results)
+print(answer["answer"], answer["citations"])
+```
+
+Set `ANTHROPIC_API_KEY` and optionally `ANTHROPIC_MODEL` before calling without
+a client. The returned dictionary also includes the selected model and API
+usage when the provider supplies it.
 
 ## Ingestion design notes
 
@@ -120,6 +143,48 @@ uvicorn app.main:app --reload
 ```
 
 Open http://localhost:8000/docs for the API documentation.
+
+## Web application
+
+The React/Vite client is in `frontend/`. Run the API and client separately:
+
+```bash
+# terminal 1
+uvicorn app.main:app --reload
+
+# terminal 2
+cd frontend
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173. The UI uploads supported text/PDF files,
+shows indexed documents, and sends questions to the `/query` endpoint. The
+API also exposes `/search` for inspecting retrieval without calling Claude.
+Alternatively, `docker compose up --build` starts both services.
+
+## Evaluation and QPS benchmark
+
+DeepEval evaluates answer and retrieval quality using the synthetic goldens (or
+BEIR), while the optional QPS benchmark measures DocMind's actual end-to-end
+query path: retrieval plus answer generation. QPS is a throughput measurement,
+not an LLM-judge metric; DeepEval's evaluation inputs are used as its workload.
+
+```bash
+# Quality metrics only
+python cli.py eval --mode synthetic --max-samples 20
+
+# Quality metrics plus full RAG throughput, after one warmup call per query
+python cli.py eval --mode synthetic --max-samples 20 --qps \
+  --qps-concurrency 4 --qps-warmup-queries 20
+```
+
+The JSON report's `qps` object includes completed and failed requests,
+wall-clock `queries_per_second`, and mean/p50/p95/max request latency in
+milliseconds. Failed requests remain in the completed count and are listed
+(up to ten errors), so provider errors do not produce a misleading throughput
+score. The same options are available through `POST /eval` as `include_qps`,
+`qps_concurrency`, and `qps_warmup_queries`.
 
 ## Docker
 

@@ -10,4 +10,9 @@ opencv-python-headless>=4.10,<5.0
 python-dotenv>=1.0,<2.0
 python-multipart>=0.0.9,<1.0
 pytest>=8.0,<9.0
+deepeval
+datasets
+langchain-core
+langchain-community
+langchain-text-splitters
 jupyterlab>=4.0,<5.0

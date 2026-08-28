@@ -70,15 +70,22 @@ class VectorStore:
 
         try:
             import chromadb
+            from chromadb.config import Settings
         except ImportError as exc:  # pragma: no cover - environment dependent
             raise RuntimeError("Install chromadb to use VectorStore") from exc
 
         if client is not None:
             self._client = client
-        elif persist_directory is not None:
-            self._client = chromadb.PersistentClient(path=str(Path(persist_directory)))
         else:
-            self._client = chromadb.EphemeralClient() 
+            # Explicitly disable optional telemetry. Besides avoiding network
+            # traffic, this prevents noisy posthog compatibility warnings.
+            settings = Settings(anonymized_telemetry=False)
+            if persist_directory is not None:
+                self._client = chromadb.PersistentClient(
+                    path=str(Path(persist_directory)), settings=settings
+                )
+            else:
+                self._client = chromadb.EphemeralClient(settings=settings)
 
         self.collection_name = collection_name
         self.embedding_model = embedding_model
